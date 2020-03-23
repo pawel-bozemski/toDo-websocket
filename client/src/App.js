@@ -10,6 +10,15 @@ class App extends React.Component {
 
   componentDidMount() {
     this.socket = io('http://localhost:8000');
+    this.socket.on('addTask', task => {
+      this.addTask(task);
+    });
+    this.socket.on('removeTask', removedTask => {
+      this.removeTask(removedTask);
+    });
+    this.socket.on('updateData', (updateData) => {
+      this.updateTasks(updateData)
+    });
   }
 
   removeTask = (removedTask) => {
@@ -22,7 +31,7 @@ class App extends React.Component {
   submitForm = (e) => {
     e.preventDefault();
     this.addTask({name: this.state.taskName});
-    this.socket.emit('addTask', this.state.taskName);
+    this.socket.emit('addTask', {name: this.state.taskName});
   };
 
   addTask = (task) => {
@@ -30,6 +39,10 @@ class App extends React.Component {
       tasks: [...this.state.tasks, task],
     })
   };
+
+  updateTasks = (updateData) => {
+    this.setState({ tasks: updateData});
+  }
 
   render() {
     const { tasks, taskName } = this.state;
