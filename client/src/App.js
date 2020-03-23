@@ -21,7 +21,7 @@ class App extends React.Component {
 
   submitForm = (e) => {
     e.preventDefault();
-    this.addTask(this.state.taskName);
+    this.addTask({name: this.state.taskName});
     this.socket.emit('addTask', this.state.taskName);
   };
 
@@ -67,7 +67,6 @@ class App extends React.Component {
             />
             <button className="btn" type="submit" onClick={e => this.submitForm(e)}>Add</button>
           </form>
-
         </section>
       </div>
     );  };
