@@ -4,12 +4,21 @@ import io from 'socket.io-client';
 class App extends React.Component {
 
   state = {
-    tasks: [],
+    tasks: [
+      {id: 1, name: 'Shopping'},
+      {id: 2, name: 'Read a book'},
+    ],
   }
 
   componentDidMount() {
     this.socket = io('http://localhost:8000');
   }
+
+  removeTask (taskId) {
+    this.setState(state => {
+      return state.tasks.splice(taskId, 1);
+    });
+  };
 
   render() {
     return (
@@ -26,7 +35,7 @@ class App extends React.Component {
             {this.state.tasks.map(task =>(
               <li key={task.id} class="task">
                 {task.name}
-                <button class="btn btn--red">Remove</button>
+                <button class="btn btn--red" onClick={() => this.removeTask(this.state.tasks.indexOf(task))}>Remove</button>
               </li>
             ))}
           </ul>
