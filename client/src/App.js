@@ -1,5 +1,6 @@
 import React from 'react';
 import io from 'socket.io-client';
+import { v4 as uuidv4 } from 'uuid';
 
 class App extends React.Component {
 
@@ -22,16 +23,19 @@ class App extends React.Component {
   }
 
   removeTask = (removedTask) => {
-    this.setState(state => {
-      return state.tasks.splice(removedTask, 1);
-    });
+    this.setState({
+      tasks:
+        this.state.tasks.filter(task => task.id !== removedTask
+      )}
+    );
     this.socket.emit('removeTask', removedTask);
   };
 
   submitForm = (e) => {
     e.preventDefault();
-    this.addTask({name: this.state.taskName});
-    this.socket.emit('addTask', {name: this.state.taskName});
+    const taskName = {name: this.state.taskName, id: uuidv4()};
+    this.addTask(taskName);
+    this.socket.emit('addTask', taskName);
   };
 
   addTask = (task) => {
@@ -61,7 +65,7 @@ class App extends React.Component {
               <li key={task.id} class="task">
                 {task.name}
                 <button class="btn btn--red"
-                onClick={() => this.removeTask(tasks.indexOf(task))}>
+                  onClick={() => this.removeTask(task.id)}>
                   Remove
                 </button>
               </li>
