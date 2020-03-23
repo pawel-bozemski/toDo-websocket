@@ -1,0 +1,7 @@
+{
+  "name": "toDoApp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Pawel Bozemski <paw.boz@gmail.com>",
+  "license": "MIT"
+}
