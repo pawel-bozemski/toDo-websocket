@@ -5,6 +5,7 @@
   "author": "Pawel Bozemski <paw.boz@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "express": "^4.17.1",
     "socket.io": "2.2.0"
   }
 }

@@ -20,9 +20,10 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('addTask', task);
   });
   socket.on('removeTask', (removedTask) => {
-    console.log('Task has been removed:' + removedTask);
+    console.log('Task has been removed: ' + removedTask);
     tasks.splice(removedTask, 1);
     socket.broadcast.emit('removeTask');
+    console.log(tasks);
   });
 
 
