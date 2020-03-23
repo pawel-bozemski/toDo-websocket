@@ -12,14 +12,24 @@ class App extends React.Component {
     this.socket = io('http://localhost:8000');
   }
 
-  removeTask (removedTask) {
+  removeTask = (removedTask) => {
     this.setState(state => {
       return state.tasks.splice(removedTask, 1);
     });
     this.socket.emit('removeTask', removedTask);
   };
 
+  submitForm = (e) => {
+    e.preventDefault();
+    this.addTask(this.state.taskName);
+    this.socket.emit('addTask', this.state.taskName);
+  };
 
+  addTask = (task) => {
+    this.setState({
+      tasks: [...this.state.tasks, task],
+    })
+  };
 
   render() {
     const { tasks, taskName } = this.state;
@@ -37,17 +47,25 @@ class App extends React.Component {
             {this.state.tasks.map(task =>(
               <li key={task.id} class="task">
                 {task.name}
-                <button class="btn btn--red" onClick={() => this.removeTask(tasks.indexOf(task))}>Remove</button>
+                <button class="btn btn--red"
+                onClick={() => this.removeTask(tasks.indexOf(task))}>
+                  Remove
+                </button>
               </li>
             ))}
           </ul>
 
           <form id="add-task-form">
             <input
-            className="text-input" autocomplete="off" type="text" placeholder="Type your description" id="task-name"
-            value={taskName} onChange={(e) => this.setState({ taskName: e.target.value })}
+            className="text-input"
+            autocomplete="off"
+            type="text"
+            placeholder="Type your description"
+            id="task-name"
+            value={taskName}
+            onChange={(e) => this.setState({ taskName: e.target.value })}
             />
-            <button className="btn" type="submit">Add</button>
+            <button className="btn" type="submit" onClick={e => this.submitForm(e)}>Add</button>
           </form>
 
         </section>
