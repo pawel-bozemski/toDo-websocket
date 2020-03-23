@@ -22,13 +22,14 @@ class App extends React.Component {
     });
   }
 
-  removeTask = (removedTask) => {
+  removeTask = (removedTask, local) => {
     this.setState({
       tasks:
         this.state.tasks.filter(task => task.id !== removedTask
       )}
-    );
-    this.socket.emit('removeTask', removedTask);
+    ); if(local){
+      this.socket.emit('removeTask', removedTask);
+    };
   };
 
   submitForm = (e) => {
@@ -61,11 +62,11 @@ class App extends React.Component {
           <h2>Tasks</h2>
 
           <ul className="tasks-section__list" id="tasks-list">
-            {this.state.tasks.map(task =>(
+            {tasks.map(task =>(
               <li key={task.id} class="task">
                 {task.name}
                 <button class="btn btn--red"
-                  onClick={() => this.removeTask(task.id)}>
+                  onClick={() => this.removeTask(task.id, true)}>
                   Remove
                 </button>
               </li>
