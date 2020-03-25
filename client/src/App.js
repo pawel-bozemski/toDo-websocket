@@ -22,15 +22,21 @@ class App extends React.Component {
     });
   }
 
-  removeTask = (removedTask, local) => {
+  removeTask = (removedTask) => {
     this.setState({
       tasks:
-        this.state.tasks.filter(task => task.id !== removedTask
-      )}
-    ); if(local){
-      this.socket.emit('removeTask', removedTask);
-    };
+        this.state.tasks.filter(task => task.id !== removedTask)
+      });
   };
+
+  notyfyRemoveTask = (removedTask) => {
+    this.socket.emit('removeTask', removedTask);
+  };
+
+  handleDeleteTask = (removedTask) => {
+    this.notyfyRemoveTask(removedTask);
+    this.removeTask(removedTask);
+  }
 
   submitForm = (e) => {
     e.preventDefault();
@@ -66,7 +72,7 @@ class App extends React.Component {
               <li key={task.id} class="task">
                 {task.name}
                 <button class="btn btn--red"
-                  onClick={() => this.removeTask(task.id, true)}>
+                  onClick={() => this.handleDeleteTask(task.id)}>
                   Remove
                 </button>
               </li>

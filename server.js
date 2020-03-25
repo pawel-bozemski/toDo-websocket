@@ -21,12 +21,10 @@ io.on('connection', (socket) => {
   });
   socket.on('removeTask', (removedTask) => {
     console.log('Task has been removed: ' + removedTask);
-    tasks.filter(task => task.id !== removedTask);
-    socket.broadcast.emit('removeTask');
+    tasks = tasks.filter(task => task.id !== removedTask);
+    socket.broadcast.emit('removeTask', removedTask);
     console.log(tasks);
   });
-
-
 });
 
 app.use((req, res) => {
